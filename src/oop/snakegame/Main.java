@@ -21,7 +21,7 @@ import java.util.List;
 
 public class Main extends Application {
 
-    private final static int tickTime = 500;
+    private final static int tickTime = 400;
     private final static String levelFileName = "level.txt";
     private final static List<Paint> colors = new ArrayList<Paint>() {{
         add(Color.BLUE);
