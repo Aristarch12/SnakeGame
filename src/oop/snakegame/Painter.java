@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import oop.snakegame.cells.SizeBonus;
 import oop.snakegame.cells.SnakeBlock;
+import oop.snakegame.cells.Teleport;
 import oop.snakegame.cells.Wall;
 import oop.snakegame.primitives.Location;
 
@@ -40,6 +41,11 @@ class Painter implements IVisitor {
             fillCell(snakeBlock.location, snakeIdToColor.get(snakeBlock.id));
         else
             fillCell(snakeBlock.location, defaultColor);
+    }
+
+    @Override
+    public void visit(Teleport teleport) {
+        fillCell(teleport.location, Color.CORAL);
     }
 
     private void fillCell(Location location, Paint p) {

@@ -2,6 +2,7 @@ package oop.snakegame;
 
 import oop.snakegame.cells.Cell;
 import oop.snakegame.cells.SizeBonus;
+import oop.snakegame.cells.Teleport;
 import oop.snakegame.cells.Wall;
 import oop.snakegame.primitives.Direction;
 import oop.snakegame.primitives.Location;
@@ -10,8 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 class LevelCreator {
 
@@ -25,6 +25,7 @@ class LevelCreator {
         return create(Files.readAllLines(Paths.get(filename)).toArray(new String[0]));
     }
 
+
     private static int nextId = 0;
 
     private static int getId() {
@@ -32,11 +33,21 @@ class LevelCreator {
         return nextId;
     }
 
+    static HashSet<Character> symbolsSnake = new HashSet<Character>() {{
+        add('U');
+        add('D');
+        add('R');
+        add('L');
+    }};
+
+    static boolean isSymbolTeleportation(char c) {
+        return  ('a' <= c && c <= 'f');
+    }
 
     static Level create(String[] cellMap) throws ParseException {
         Field field = new Field(cellMap[0].length(), cellMap.length);
         List<Snake> snakes = new ArrayList<>();
-
+        HashMap<Character, List<Location>> locationTeleportes = new HashMap<Character, List<Location>>();
         for (int y = 0; y < field.height; y++) {
 
             if (cellMap[y].length() != field.width)
@@ -45,18 +56,40 @@ class LevelCreator {
             for (int x = 0; x < field.width; x++) {
                 char currentCell = cellMap[y].charAt(x);
                 Location location = new Location(x, y);
-
+                if (symbolsSnake.contains(currentCell)) {
+                    Snake snake = createSnake(location, currentCell);
+                    if (snake != null)
+                        snakes.add(snake);
+                    continue;
+                }
                 Cell cell = createCell(location, currentCell);
                 if (cell != null) {
                     field.addCell(cell);
-                    continue;
                 }
 
-                Snake snake = createSnake(location, currentCell);
-                if (snake != null)
-                    snakes.add(snake);
+                if (isSymbolTeleportation(currentCell)) {
+                    if (locationTeleportes.containsKey(currentCell))
+                        locationTeleportes.get(currentCell).add(location);
+                    else
+                        locationTeleportes.put(currentCell, new ArrayList<Location>() {{add(location);}});
+
+                }
+
             }
+
         }
+        for ( List<Location> locationList: locationTeleportes.values()) {
+            if (locationList.size() != 2) {
+                throw new IllegalArgumentException("wrong installation of teleports");
+            }
+            Teleport firstTeleport = new Teleport(locationList.get(0));
+            Teleport secondTeleport = new Teleport(locationList.get(1));
+            firstTeleport.setExitPoint(secondTeleport.location);
+            secondTeleport.setExitPoint(firstTeleport.location);
+            field.addCell(firstTeleport);
+            field.addCell(secondTeleport);
+        }
+
         if (snakes.isEmpty())
             throw new ParseException("no snakes on map", field.height * field.width);
 
@@ -68,8 +101,7 @@ class LevelCreator {
             return new SizeBonus(location, Character.getNumericValue(c));
         else if (c == '#')
             return new Wall(location);
-        else
-            return null;
+        return null;
     }
 
     private static Snake createSnake(Location location, char c) {

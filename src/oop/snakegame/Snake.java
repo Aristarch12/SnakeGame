@@ -26,6 +26,12 @@ public class Snake implements Iterable<SnakeBlock>, IControllableSnake {
         death = false;
     }
 
+
+
+    public void setHeadLocation(Location newLocation) {
+        blocks.set(0, new SnakeBlock(newLocation, id));
+    }
+
     public void destroy() {
         death = true;
     }
@@ -71,6 +77,10 @@ public class Snake implements Iterable<SnakeBlock>, IControllableSnake {
         }
     }
 
+    public boolean containsLocation(Location location) {
+        return stream().anyMatch(snakeBlock -> snakeBlock.location.equals(location));
+    }
+
     public Iterator<SnakeBlock> iterator() {
         return blocks.iterator();
     }
@@ -83,7 +93,7 @@ public class Snake implements Iterable<SnakeBlock>, IControllableSnake {
         return blocks.stream();
     }
 
-    Direction getNextHeadDirection() {
+    public Direction getNextHeadDirection() {
         synchronized (this) {
             return nextHeadDirection;
         }

@@ -1,6 +1,7 @@
 package oop.snakegame;
 
 import oop.snakegame.cells.Cell;
+import oop.snakegame.cells.SnakeBlock;
 import oop.snakegame.primitives.Location;
 
 import java.util.*;
@@ -27,15 +28,30 @@ public class Level implements Iterable<Cell> {
                 snake.destroy();
             }
         }
-        for (Snake snake: snakes)
-            for (Cell cell : getCells(snake.getHead().location))
-                if (cell != snake.getHead())
-                    cell.interactWithSnake(snake, this);
+        for (Snake snake: snakes) {
+
+            label : while (true) {
+                SnakeBlock head = snake.getHead();
+                for (Cell cell : getCells(snake.getHead().location)) {
+                    if (cell != snake.getHead()) {
+                        cell.interactWithSnake(snake, this);
+                        if (snake.getHead() != head) {
+                            continue label;
+                        }
+                    }
+                }
+                break;
+
+            }
+
+        }
+
     }
 
     private List<Cell> getCells(Location location) {
         return stream().filter(cell -> cell.location.equals(location)).collect(Collectors.toList());
     }
+
 
     public List<Location> getFreeLocations() {
         HashSet<Location> result = new HashSet<>();
