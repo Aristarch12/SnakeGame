@@ -3,10 +3,7 @@ package oop.snakegame;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import oop.snakegame.cells.SizeBonus;
-import oop.snakegame.cells.SnakeBlock;
-import oop.snakegame.cells.Teleport;
-import oop.snakegame.cells.Wall;
+import oop.snakegame.cells.*;
 import oop.snakegame.primitives.Location;
 
 import java.util.HashMap;
@@ -28,6 +25,11 @@ class Painter implements IVisitor {
     @Override
     public void visit(Wall wall){
         fillCell(wall.location, Color.GRAY);
+    }
+
+    @Override
+    public void visit(MovingBonus movingBonus){
+        fillCell(movingBonus.location, Color.FORESTGREEN);
     }
 
     @Override
