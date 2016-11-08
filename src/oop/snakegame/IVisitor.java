@@ -8,4 +8,5 @@ public interface IVisitor {
     void visit(SnakeBlock block);
     void visit(Teleport teleport);
     void visit(MovingBonus movingBonus);
+    void visit(TemporaryBonus temporaryBonus);
 }
