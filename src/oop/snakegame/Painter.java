@@ -29,7 +29,15 @@ class Painter implements IVisitor {
 
     @Override
     public void visit(MovingBonus movingBonus){
-        fillCell(movingBonus.location, Color.FORESTGREEN);
+        fillCell(movingBonus.location, Color.KHAKI);
+    }
+
+    @Override
+    public void visit(TemporaryBonus temporaryBonus) {
+        Color color = Color.GOLD;
+        if (temporaryBonus.getTimeToLive() < 5)
+            color = Color.FUCHSIA;
+        fillCell(temporaryBonus.location, color);
     }
 
     @Override

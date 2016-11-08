@@ -3,8 +3,8 @@ import oop.snakegame.Level;
 import oop.snakegame.primitives.Location;
 
 public abstract class ActiveBonus extends Bonus {
-    ActiveBonus(Location location) {
-        super(location);
+    ActiveBonus(Location location, int cost) {
+        super(location, cost);
     }
 
     abstract void doAction(Level level);

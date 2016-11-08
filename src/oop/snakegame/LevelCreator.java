@@ -1,9 +1,6 @@
 package oop.snakegame;
 
-import oop.snakegame.cells.Cell;
-import oop.snakegame.cells.SizeBonus;
-import oop.snakegame.cells.Teleport;
-import oop.snakegame.cells.Wall;
+import oop.snakegame.cells.*;
 import oop.snakegame.primitives.Direction;
 import oop.snakegame.primitives.Location;
 
@@ -99,6 +96,10 @@ class LevelCreator {
     private static Cell createCell(Location location, char c) {
         if ('0' <= c && c <= '9')
             return new SizeBonus(location, Character.getNumericValue(c));
+        else if (c == '*')
+            return new TemporaryBonus(location, 20, 5);
+        else if (c == '!')
+            return new MovingBonus(location, 5);
         else if (c == '#')
             return new Wall(location);
         return null;

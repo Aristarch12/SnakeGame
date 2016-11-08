@@ -1,7 +1,6 @@
 package oop.snakegame;
 
-import oop.snakegame.cells.Cell;
-import oop.snakegame.cells.SnakeBlock;
+import oop.snakegame.cells.*;
 import oop.snakegame.primitives.Location;
 
 import java.util.*;
@@ -26,6 +25,19 @@ public class Level implements Iterable<Cell> {
             snake.move();
             if (!field.isCorrectLocation(snake.getHead().location)) {
                 snake.destroy();
+            }
+        }
+        for (Cell cell : this)
+        {
+            if (cell instanceof TemporaryBonus)
+            {
+                TemporaryBonus temporaryBonus = (TemporaryBonus)cell;
+                temporaryBonus.doAction(this);
+            }
+            if (cell instanceof MovingBonus)
+            {
+                MovingBonus movingBonus = (MovingBonus)cell;
+                movingBonus.doAction(this);
             }
         }
         for (Snake snake: snakes) {
@@ -62,6 +74,22 @@ public class Level implements Iterable<Cell> {
             result.remove(cell.location);
         }
         return new ArrayList<>(result);
+    }
+
+    public ArrayList<Location> getFreeNeighbors(Location location) {
+        ArrayList<Location> result = new ArrayList<>();
+        List<Location> freeLocations = getFreeLocations();
+        for (Location freeLocation : freeLocations)
+            if (Math.abs(freeLocation.x - location.x) + Math.abs(freeLocation.y - location.y) == 1)
+                result.add(new Location(freeLocation.x, freeLocation.y));
+        return result;
+    }
+
+    public Location getFreeRandomLocation()
+    {
+        List<Location> freeLocations = getFreeLocations();
+        int index = random.nextInt(freeLocations.size());
+        return freeLocations.get(index);
     }
 
     Stream<Cell> stream(){

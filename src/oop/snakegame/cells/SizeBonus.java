@@ -10,22 +10,19 @@ public class SizeBonus extends Bonus {
     private int sizeIncrement;
 
     public SizeBonus(Location location, int sizeIncrement) {
-        super(location);
+        super(location, sizeIncrement);
         this.sizeIncrement = sizeIncrement;
     }
 
     @Override
     public void interactWithSnake(Snake snake, Level level) throws GameException {
         super.interactWithSnake(snake, level);
-        snake.extend(sizeIncrement);
-        regenerate(level);
     }
 
-    private void regenerate(Level level) {
-        List<Location> freeLocations = level.getFreeLocations();
-        int index = level.random.nextInt(freeLocations.size());
+    @Override
+    public void regenerate(Level level) {
         int increment = level.random.nextInt(4) + 1;
-        level.field.addCell(new SizeBonus(freeLocations.get(index), increment));
+        level.field.addCell(new SizeBonus(level.getFreeRandomLocation(), increment));
     }
 
     @Override
