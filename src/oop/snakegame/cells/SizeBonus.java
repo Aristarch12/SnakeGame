@@ -3,7 +3,6 @@ package oop.snakegame.cells;
 import oop.snakegame.*;
 import oop.snakegame.primitives.Location;
 
-import java.util.List;
 
 public class SizeBonus extends Bonus {
 
@@ -15,8 +14,9 @@ public class SizeBonus extends Bonus {
     }
 
     @Override
-    public void interactWithSnake(Snake snake, Level level) throws GameException {
-        super.interactWithSnake(snake, level);
+    public void interactWithPlayer(Player player, Level level) throws GameException {
+        super.interactWithPlayer(player, level);
+        player.getSnake().extend(sizeIncrement);
     }
 
     @Override

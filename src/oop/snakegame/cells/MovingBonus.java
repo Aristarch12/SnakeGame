@@ -1,14 +1,10 @@
 package oop.snakegame.cells;
 
 
-import oop.snakegame.GameException;
-import oop.snakegame.IVisitor;
-import oop.snakegame.Level;
-import oop.snakegame.Snake;
+import oop.snakegame.*;
 import oop.snakegame.primitives.Location;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MovingBonus extends ActiveBonus{
     private int cost;
@@ -19,7 +15,7 @@ public class MovingBonus extends ActiveBonus{
     }
 
     @Override
-    public void doAction(Level level) {
+    public void UpdateGameState(Level level) {
         level.field.removeCell(this);
         ArrayList<Location> freeLocations = level.getFreeNeighbors(location);
         freeLocations.add(location);
@@ -28,8 +24,8 @@ public class MovingBonus extends ActiveBonus{
     }
 
     @Override
-    public void interactWithSnake(Snake snake, Level level) throws GameException {
-        super.interactWithSnake(snake, level);
+    public void interactWithPlayer(Player player, Level level) throws GameException {
+        super.interactWithPlayer(player, level);
     }
 
     @Override

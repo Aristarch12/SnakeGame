@@ -3,10 +3,8 @@ package oop.snakegame.cells;
 
 import oop.snakegame.GameException;
 import oop.snakegame.Level;
+import oop.snakegame.Player;
 import oop.snakegame.primitives.Location;
-import oop.snakegame.Snake;
-
-import java.util.List;
 
 public abstract class Bonus extends Cell {
 
@@ -18,9 +16,9 @@ public abstract class Bonus extends Cell {
     }
 
     @Override
-    public void interactWithSnake(Snake snake, Level level) throws GameException {
+    public void interactWithPlayer(Player player, Level level) throws GameException {
+        player.addScore(cost);
         level.field.removeCell(this);
-        snake.extend(cost);
         regenerate(level);
     }
 

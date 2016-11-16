@@ -157,7 +157,7 @@ public class Main extends Application {
         if (game.getState() == GameState.Finished) {
             gc.setFill(Color.RED);
             gc.setFont(Font.font(40));
-            gc.fillText("Game Over", 0, canvas.getHeight() / 2);
+            gc.fillText("Game Over", canvas.getWidth() / 2, canvas.getHeight() / 2);
             return;
         }
         for (Cell cell : game.getLevel()) {

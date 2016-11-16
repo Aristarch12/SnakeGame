@@ -20,47 +20,18 @@ public class Level implements Iterable<Cell> {
         this.random = new Random();
     }
 
-    void handleTick() throws GameException {
-        for (Snake snake : Arrays.stream(snakes).filter(s -> !s.isDead()).collect(Collectors.toList())) {
-            snake.move();
-            if (!field.isCorrectLocation(snake.getHead().location)) {
-                snake.destroy();
-            }
-        }
+    void updateStateActiveBonuses() {
         for (Cell cell : this)
         {
-            if (cell instanceof TemporaryBonus)
-            {
-                TemporaryBonus temporaryBonus = (TemporaryBonus)cell;
-                temporaryBonus.doAction(this);
-            }
-            if (cell instanceof MovingBonus)
-            {
-                MovingBonus movingBonus = (MovingBonus)cell;
-                movingBonus.doAction(this);
+            if (cell instanceof ActiveBonus) {
+                ActiveBonus activeBonus = (ActiveBonus) cell;
+                activeBonus.UpdateGameState(this);
             }
         }
-        for (Snake snake: snakes) {
-
-            label : while (true) {
-                SnakeBlock head = snake.getHead();
-                for (Cell cell : getCells(snake.getHead().location)) {
-                    if (cell != snake.getHead()) {
-                        cell.interactWithSnake(snake, this);
-                        if (snake.getHead() != head) {
-                            continue label;
-                        }
-                    }
-                }
-                break;
-
-            }
-
-        }
-
     }
 
-    private List<Cell> getCells(Location location) {
+
+    public List<Cell> getCells(Location location) {
         return stream().filter(cell -> cell.location.equals(location)).collect(Collectors.toList());
     }
 

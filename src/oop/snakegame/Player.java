@@ -5,13 +5,17 @@ enum PlayerState{
 }
 
 public class Player {
-    private int score;
+    private int score = 0;
     private Snake snake;
 
-    public IControllableSnake getSnake(){
+    public Snake getSnake(){
         return snake;
     }
+    public void addScore(int increment) {
+        score += increment;
+    }
 
+    public int getScore() { return score; }
     void setSnake(Snake snake){
         this.snake = snake;
     }

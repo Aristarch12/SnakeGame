@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.stream.Stream;
 
-public class Snake implements Iterable<SnakeBlock>, IControllableSnake {
+public class Snake implements Iterable<SnakeBlock> {
     private Direction lastHeadDirection;
     private Direction nextHeadDirection;
     private LinkedList<SnakeBlock> blocks;
@@ -26,7 +26,13 @@ public class Snake implements Iterable<SnakeBlock>, IControllableSnake {
         death = false;
     }
 
-
+    public void setNextHeadDirection(Direction direction) {
+        if (getLength() > 1 && direction == lastHeadDirection.opposite())
+            return;
+        synchronized (this){
+            nextHeadDirection = direction;
+        }
+    }
 
     public void setHeadLocation(Location newLocation) {
         blocks.set(0, new SnakeBlock(newLocation, id));
@@ -36,12 +42,38 @@ public class Snake implements Iterable<SnakeBlock>, IControllableSnake {
         death = true;
     }
 
-    boolean isDead()  {
-        return death;
+    public boolean containsLocation(Location location) {
+        return stream().anyMatch(snakeBlock -> snakeBlock.location.equals(location));
+    }
+    public Direction getNextHeadDirection() {
+        synchronized (this) {
+            return nextHeadDirection;
+        }
+    }
+
+    public void reverse(){
+        Collections.reverse(blocks);
+        if (blocks.size() > 1) {
+            SnakeBlock firstBlock = blocks.get(0);
+            SnakeBlock secondBlock = blocks.get(1);
+            Offset offset = secondBlock.location.getOffset(firstBlock.location);
+            nextHeadDirection = Direction.fromOffset(offset);
+        } else {
+            nextHeadDirection = nextHeadDirection.opposite();
+        }
+        lastHeadDirection = nextHeadDirection;
+    }
+
+    public Iterator<SnakeBlock> iterator() {
+        return blocks.iterator();
     }
 
     public void extend(int increment) {
         extensionCount += increment;
+    }
+
+    boolean isDead()  {
+        return death;
     }
 
     void move() {
@@ -69,21 +101,8 @@ public class Snake implements Iterable<SnakeBlock>, IControllableSnake {
         return blocks.size();
     }
 
-    public void setNextHeadDirection(Direction direction) {
-        if (getLength() > 1 && direction == lastHeadDirection.opposite())
-            return;
-        synchronized (this){
-            nextHeadDirection = direction;
-        }
-    }
 
-    public boolean containsLocation(Location location) {
-        return stream().anyMatch(snakeBlock -> snakeBlock.location.equals(location));
-    }
 
-    public Iterator<SnakeBlock> iterator() {
-        return blocks.iterator();
-    }
 
     SnakeBlock[] toArray() {
         return blocks.toArray(new SnakeBlock[0]);
@@ -93,26 +112,11 @@ public class Snake implements Iterable<SnakeBlock>, IControllableSnake {
         return blocks.stream();
     }
 
-    public Direction getNextHeadDirection() {
-        synchronized (this) {
-            return nextHeadDirection;
-        }
-    }
+
 
     SnakeBlock getHead() {
         return blocks.getFirst();
     }
 
-    public void reverse(){
-        Collections.reverse(blocks);
-        if (blocks.size() > 1) {
-            SnakeBlock firstBlock = blocks.get(0);
-            SnakeBlock secondBlock = blocks.get(1);
-            Offset offset = secondBlock.location.getOffset(firstBlock.location);
-            nextHeadDirection = Direction.fromOffset(offset);
-        } else {
-            nextHeadDirection = nextHeadDirection.opposite();
-        }
-        lastHeadDirection = nextHeadDirection;
-    }
+
 }

@@ -1,12 +1,9 @@
 package oop.snakegame.cells;
 
-import oop.snakegame.GameException;
+
 import oop.snakegame.IVisitor;
 import oop.snakegame.Level;
-import oop.snakegame.Snake;
 import oop.snakegame.primitives.Location;
-
-import java.util.List;
 
 public class TemporaryBonus extends ActiveBonus {
     private int startTime;
@@ -23,7 +20,7 @@ public class TemporaryBonus extends ActiveBonus {
     public int getTimeToLive() { return timeToLive; }
 
     @Override
-    public void doAction(Level level) {
+    public void UpdateGameState(Level level) {
         timeToLive--;
         if (timeToLive == 0) {
             level.field.removeCell(this);
@@ -32,10 +29,6 @@ public class TemporaryBonus extends ActiveBonus {
         }
     }
 
-    @Override
-    public void interactWithSnake(Snake snake, Level level) throws GameException {
-        super.interactWithSnake(snake, level);
-    }
 
     @Override
     public void regenerate(Level level) {

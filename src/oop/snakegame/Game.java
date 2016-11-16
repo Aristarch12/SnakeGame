@@ -1,5 +1,7 @@
 package oop.snakegame;
 
+import oop.snakegame.cells.Cell;
+import oop.snakegame.cells.SnakeBlock;
 import oop.snakegame.playercontrollers.PlayerController;
 
 import java.util.Arrays;
@@ -25,13 +27,44 @@ class Game {
         for (PlayerController controller: controllers){
             controller.controlPlayer();
         }
+        level.updateStateActiveBonuses();
         try {
-            level.handleTick();
+            for (Player player : players) {
+                UpdatePlayerState(player);
+            }
         } catch (GameException e){
             e.printStackTrace();
         }
         if (Arrays.stream(players).allMatch(player -> player.getState() == PlayerState.Dead))
             state = GameState.Finished;
+    }
+
+    private void UpdatePlayerState(Player player) throws GameException {
+        Snake snake = player.getSnake();
+        if (snake.isDead())
+            return;
+        snake.move();
+        if (!level.field.isCorrectLocation(snake.getHead().location)) {
+            snake.destroy();
+        } else  {
+            handleInteractionWithObjects(player);
+        }
+    }
+
+    private void handleInteractionWithObjects(Player player) throws GameException {
+        Snake snake = player.getSnake();
+        label : while (true) {
+            SnakeBlock head = snake.getHead();
+            for (Cell cell : level.getCells(snake.getHead().location)) {
+                if (cell != snake.getHead() && cell != head) {
+                    cell.interactWithPlayer(player, getLevel());
+                }
+                if (snake.getHead() != head) {
+                    continue label;
+                }
+            }
+            return;
+        }
     }
 
     GameState getState(){
@@ -48,7 +81,7 @@ class Game {
         }
     }
 
-    Level getLevel(){
+    public Level getLevel(){
         return level;
     }
 

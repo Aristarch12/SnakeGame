@@ -1,9 +1,6 @@
 package oop.snakegame.cells;
 
-import oop.snakegame.GameException;
-import oop.snakegame.IVisitor;
-import oop.snakegame.Level;
-import oop.snakegame.Snake;
+import oop.snakegame.*;
 import oop.snakegame.primitives.Direction;
 import oop.snakegame.primitives.Location;
 
@@ -19,10 +16,10 @@ public class Teleport extends Cell{
     }
 
     @Override
-    public void interactWithSnake(Snake snake, Level level) throws GameException {
+    public void interactWithPlayer(Player player, Level level) throws GameException {
         if (exitPoint == null)
             throw new NullPointerException("exit point is not installed");
-
+        Snake snake = player.getSnake();
         Direction snakeDirection = snake.getNextHeadDirection();
         Location newLocation = exitPoint.addOffset(snakeDirection.getOffset());
         snake.setHeadLocation(newLocation);

@@ -26,7 +26,7 @@ public abstract class Cell {
         return location != null ? location.hashCode() : 0;
     }
 
-    public abstract void interactWithSnake(Snake snake, Level level) throws GameException;
+    public abstract void interactWithPlayer(Player player, Level level) throws GameException;
 
     public abstract void accept(IVisitor visitor);
 }

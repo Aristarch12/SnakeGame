@@ -7,5 +7,5 @@ public abstract class ActiveBonus extends Bonus {
         super(location, cost);
     }
 
-    abstract void doAction(Level level);
+    public abstract void UpdateGameState(Level level);
 }
