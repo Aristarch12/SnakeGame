@@ -7,11 +7,8 @@ import oop.snakegame.primitives.Location;
 import java.util.ArrayList;
 
 public class MovingBonus extends ActiveBonus{
-    private int cost;
-
     public MovingBonus(Location location, int cost) {
         super(location, cost);
-        this.cost = cost;
     }
 
     @Override

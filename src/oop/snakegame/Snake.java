@@ -26,11 +26,29 @@ public class Snake implements Iterable<SnakeBlock> {
         death = false;
     }
 
-    public void setNextHeadDirection(Direction direction) {
+    void setNextHeadDirection(Direction direction) {
         if (getLength() > 1 && direction == lastHeadDirection.opposite())
             return;
         synchronized (this){
             nextHeadDirection = direction;
+        }
+    }
+
+    public void discardTail(Location fracture) {
+        LinkedList<SnakeBlock> newBlocks = new LinkedList<>();
+        for (SnakeBlock snakeBlock : blocks) {
+            if (!snakeBlock.location.equals(fracture)) {
+                newBlocks.addLast(snakeBlock);
+            }
+            else {
+                break;
+            }
+        }
+        if (newBlocks.isEmpty()) {
+            destroy();
+        }
+        else {
+            blocks = newBlocks;
         }
     }
 
@@ -51,7 +69,7 @@ public class Snake implements Iterable<SnakeBlock> {
         }
     }
 
-    public void reverse(){
+    void reverse(){
         Collections.reverse(blocks);
         if (blocks.size() > 1) {
             SnakeBlock firstBlock = blocks.get(0);
@@ -97,12 +115,9 @@ public class Snake implements Iterable<SnakeBlock> {
         blocks.removeLast();
     }
 
-    int getLength() {
+    private int getLength() {
         return blocks.size();
     }
-
-
-
 
     SnakeBlock[] toArray() {
         return blocks.toArray(new SnakeBlock[0]);

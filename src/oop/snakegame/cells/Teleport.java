@@ -5,8 +5,6 @@ import oop.snakegame.primitives.Direction;
 import oop.snakegame.primitives.Location;
 
 public class Teleport extends Cell{
-
-
     private Location exitPoint;
     public Teleport(Location location) {
         super(location);

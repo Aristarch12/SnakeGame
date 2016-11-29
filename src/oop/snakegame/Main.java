@@ -145,12 +145,14 @@ public class Main extends Application {
             public void run() {
                 game.tick();
                 Platform.runLater(() -> repaint());
-                if (game.getState() == GameState.Finished)
+                if (game.getState() == GameState.Finished) {
                     timer.cancel();
+                }
+
             }
         }, 0, tickTime);
     }
-
+    
     private void repaint() {
         Canvas canvas = gc.getCanvas();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());

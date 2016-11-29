@@ -37,8 +37,8 @@ class LevelCreator {
         add('L');
     }};
 
-    static boolean isSymbolTeleportation(char c) {
-        return  ('a' <= c && c <= 'f');
+    private static boolean isSymbolTeleportation(char c) {
+        return  ('a' <= c && c <= 'g');
     }
 
     static Level create(String[] cellMap) throws ParseException {

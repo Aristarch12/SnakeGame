@@ -8,7 +8,7 @@ import oop.snakegame.primitives.Location;
 
 public abstract class Bonus extends Cell {
 
-    private int cost;
+    protected int cost;
 
     Bonus(Location location, int cost) {
         super(location);

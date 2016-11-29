@@ -8,13 +8,11 @@ import oop.snakegame.primitives.Location;
 public class TemporaryBonus extends ActiveBonus {
     private int startTime;
     private int timeToLive;
-    private int cost;
 
     public TemporaryBonus(Location location, int timeToLive, int cost) {
         super(location, cost);
         startTime = timeToLive;
         this.timeToLive = timeToLive;
-        this.cost = cost;
     }
 
     public int getTimeToLive() { return timeToLive; }
