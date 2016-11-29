@@ -2,7 +2,7 @@ package oop.snakegame;
 
 import oop.snakegame.cells.Cell;
 import oop.snakegame.cells.SnakeBlock;
-import oop.snakegame.playercontrollers.PlayerController;
+import oop.snakegame.controllers.IController;
 
 import java.util.Arrays;
 
@@ -10,12 +10,12 @@ enum GameState{
     Active, Finished
 }
 
-class Game {
+public class Game {
 
     private Level level;
     private GameState state = GameState.Active;
     final Player[] players;
-    private PlayerController[] controllers;
+    private IController[] controllers;
 
     Game(int playersCount){
         players = new Player[playersCount];
@@ -24,8 +24,8 @@ class Game {
     }
 
     void tick() {
-        for (PlayerController controller: controllers){
-            controller.controlPlayer();
+        for (IController controller: controllers){
+            controller.controlGame(this);
         }
         level.updateStateActiveBonuses();
         try {
@@ -85,7 +85,7 @@ class Game {
         return level;
     }
 
-    void setControllers(PlayerController[] controllers) {
+    void setControllers(IController[] controllers) {
         this.controllers = controllers;
     }
 }

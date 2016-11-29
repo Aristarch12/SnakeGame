@@ -9,13 +9,15 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import oop.snakegame.cells.Cell;
-import oop.snakegame.playercontrollers.KeyboardPlayerController;
-import oop.snakegame.playercontrollers.PlayerController;
+import oop.snakegame.controllers.IController;
+import oop.snakegame.controllers.KeyboardPlayerController;
+import oop.snakegame.controllers.MouseController;
 import oop.snakegame.primitives.Direction;
 
 import java.util.*;
@@ -76,11 +78,11 @@ public class Main extends Application {
     private int getMaxCountPlayers() {
         return collectionKeyMap.size();
     }
-
+    private final static int cellSize = 20;
     private Game game;
     private GraphicsContext gc;
     private Timer timer = new Timer();
-    private PlayerController[] controllers;
+    private IController[] controllers;
     private Painter painter;
 
     @Override
@@ -90,18 +92,19 @@ public class Main extends Application {
         game.setControllers(controllers);
         game.loadLevel(LevelCreator.create(levelFileName));
         Field field = game.getLevel().field;
-        setUpStage(primaryStage, field.width * Painter.cellSize, field.height * Painter.cellSize);
+        setUpStage(primaryStage, field.width * cellSize, field.height * cellSize);
         scheduleGameTimer();
     }
 
-    private PlayerController[] createControllers(Player[] players) {
-        PlayerController[] controllers = new PlayerController[playersCount];
+    private IController[] createControllers(Player[] players) {
+        List<IController> controllers = new ArrayList<>(playersCount);
         for (int i = 0; i < playersCount; i++) {
             KeyboardPlayerController controller = new KeyboardPlayerController(players[i]);
             controller.setKeyMap(collectionKeyMap.get(i));
-            controllers[i] = controller;
+            controllers.add(controller);
         }
-        return controllers;
+        controllers.add(new MouseController(cellSize));
+        return controllers.toArray(new IController[controllers.size()]);
     }
 
     private void setUpStage(Stage primaryStage, int width, int height) {
@@ -109,21 +112,30 @@ public class Main extends Application {
         Canvas canvas = new Canvas(width, height);
         root.getChildren().add(canvas);
         gc = canvas.getGraphicsContext2D();
-        painter = new Painter(gc, createSnakeIdToColorMap());
+        painter = new Painter(gc, createSnakeIdToColorMap(), cellSize);
         Scene scene = new Scene(root);
-        addKeyboardHandlers(scene, controllers);
+        addHandlers(scene, controllers);
         primaryStage.setTitle("Змейка");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private void addKeyboardHandlers(Scene scene, PlayerController[] controllers) {
-        for(PlayerController controller: controllers)  {
-            if (controller instanceof EventHandler<?>)
+    private void addHandlers(Scene scene, IController[] controllers) {
+        for(IController controller: controllers)  {
+            if (controller instanceof  KeyboardPlayerController && controller instanceof EventHandler<?>)
                 try {
                     scene.addEventHandler(KeyEvent.KEY_PRESSED, (EventHandler<? super KeyEvent>) controller);
                 } catch (ClassCastException ignored) {}
+            if (controller instanceof  MouseController && controller instanceof EventHandler<?>)
+                try {
+                    scene.addEventHandler(MouseEvent.MOUSE_PRESSED, (EventHandler<? super MouseEvent>) controller);
+                } catch (ClassCastException ignored) {}
         }
+
+    }
+
+    private void addHandler(Scene scene, IController controller) {
+
     }
 
     private HashMap<Integer, Paint> createSnakeIdToColorMap() {
@@ -152,7 +164,7 @@ public class Main extends Application {
             }
         }, 0, tickTime);
     }
-    
+
     private void repaint() {
         Canvas canvas = gc.getCanvas();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());

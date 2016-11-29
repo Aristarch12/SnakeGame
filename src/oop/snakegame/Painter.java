@@ -10,15 +10,16 @@ import java.util.HashMap;
 
 class Painter implements IVisitor {
 
-    final static int cellSize = 15;
+    final int cellSize;
     final static Paint defaultColor = Color.PINK;
 
     private final HashMap<Integer, Paint> snakeIdToColor;
     private GraphicsContext gc;
 
-    Painter(GraphicsContext gc, HashMap<Integer, Paint> idToColor){
+    Painter(GraphicsContext gc, HashMap<Integer, Paint> idToColor, int cellSize){
         this.gc = gc;
         this.snakeIdToColor = idToColor;
+        this.cellSize = cellSize;
 
     }
 

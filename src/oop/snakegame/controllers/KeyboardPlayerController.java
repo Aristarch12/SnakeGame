@@ -1,4 +1,4 @@
-package oop.snakegame.playercontrollers;
+package oop.snakegame.controllers;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
