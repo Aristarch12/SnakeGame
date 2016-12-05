@@ -9,4 +9,5 @@ public interface IVisitor {
     void visit(Teleport teleport);
     void visit(MovingBonus movingBonus);
     void visit(TemporaryBonus temporaryBonus);
+    void visit(LifeCell lifeCell);
 }

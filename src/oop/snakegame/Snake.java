@@ -34,24 +34,6 @@ public class Snake implements Iterable<SnakeBlock> {
         }
     }
 
-    public void discardTail(Location fracture) {
-        LinkedList<SnakeBlock> newBlocks = new LinkedList<>();
-        for (SnakeBlock snakeBlock : blocks) {
-            if (!snakeBlock.location.equals(fracture)) {
-                newBlocks.addLast(snakeBlock);
-            }
-            else {
-                break;
-            }
-        }
-        if (newBlocks.isEmpty()) {
-            destroy();
-        }
-        else {
-            blocks = newBlocks;
-        }
-    }
-
     public void setHeadLocation(Location newLocation) {
         blocks.set(0, new SnakeBlock(newLocation, id));
     }

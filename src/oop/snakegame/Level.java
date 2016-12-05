@@ -13,10 +13,12 @@ public class Level implements Iterable<Cell> {
     final Snake[] snakes;
 
     public final Random random;
+    public final Life life;
 
-    Level(Field field, Snake[] snakes) {
+    Level(Field field, Snake[] snakes, Life life) {
         this.field = field;
         this.snakes = snakes;
+        this.life = life;
         this.random = new Random();
     }
 
@@ -65,7 +67,7 @@ public class Level implements Iterable<Cell> {
 
     Stream<Cell> stream(){
         return Stream.concat(
-                Stream.of(field.stream()),
+                Stream.concat(Stream.of(life.stream()),Stream.of(field.stream())),
                 Arrays.stream(snakes).filter(snake -> !snake.isDead()).map(Snake::stream)
         ).reduce(Stream::concat).orElseGet(Stream::empty).map(cell -> (Cell)cell);
     }

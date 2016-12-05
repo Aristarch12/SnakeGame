@@ -3,8 +3,10 @@ package oop.snakegame;
 import oop.snakegame.cells.Cell;
 import oop.snakegame.cells.SnakeBlock;
 import oop.snakegame.controllers.IGameController;
+import oop.snakegame.primitives.Location;
 
 import java.util.Arrays;
+import java.util.List;
 
 enum GameState{
     Active, Finished
@@ -28,6 +30,7 @@ public class Game {
             controller.controlGame(this);
         }
         level.updateStateActiveBonuses();
+        level.life.update();
         try {
             for (Player player : players) {
                 UpdatePlayerState(player);

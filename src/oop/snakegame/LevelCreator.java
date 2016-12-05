@@ -44,6 +44,7 @@ class LevelCreator {
     static Level create(String[] cellMap) throws ParseException {
         Field field = new Field(cellMap[0].length(), cellMap.length);
         List<Snake> snakes = new ArrayList<>();
+        Life life = new Life();
         HashMap<Character, List<Location>> locationTeleportes = new HashMap<Character, List<Location>>();
         for (int y = 0; y < field.height; y++) {
 
@@ -60,8 +61,12 @@ class LevelCreator {
                     continue;
                 }
                 Cell cell = createCell(location, currentCell);
+
                 if (cell != null) {
-                    field.addCell(cell);
+                    if (cell instanceof LifeCell)
+                        life.addCell((LifeCell) cell);
+                    else
+                        field.addCell(cell);
                 }
 
                 if (isSymbolTeleportation(currentCell)) {
@@ -69,11 +74,8 @@ class LevelCreator {
                         locationTeleportes.get(currentCell).add(location);
                     else
                         locationTeleportes.put(currentCell, new ArrayList<Location>() {{add(location);}});
-
                 }
-
             }
-
         }
         for ( List<Location> locationList: locationTeleportes.values()) {
             if (locationList.size() != 2) {
@@ -90,7 +92,7 @@ class LevelCreator {
         if (snakes.isEmpty())
             throw new ParseException("no snakes on map", field.height * field.width);
 
-        return new Level(field, snakes.toArray(new Snake[snakes.size()]));
+        return new Level(field, snakes.toArray(new Snake[snakes.size()]), life);
     }
 
     private static Cell createCell(Location location, char c) {
@@ -102,6 +104,8 @@ class LevelCreator {
             return new MovingBonus(location, 5);
         else if (c == '#')
             return new Wall(location);
+        else if (c == '+')
+            return new LifeCell(location);
         return null;
     }
 

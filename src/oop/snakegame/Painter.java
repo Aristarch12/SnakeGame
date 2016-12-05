@@ -42,6 +42,11 @@ class Painter implements IVisitor {
     }
 
     @Override
+    public void visit(LifeCell lifeCell) {
+        fillCell(lifeCell.location, Color.LIGHTCORAL);
+    }
+
+    @Override
     public void visit(SizeBonus bonus){
         fillCell(bonus.location, Color.GREEN);
     }
