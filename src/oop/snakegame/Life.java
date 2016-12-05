@@ -61,13 +61,13 @@ public class Life implements Iterable<LifeCell>  {
     }
 
     private boolean willSurvive(Location location) {
-        int countNeighbors = 0;
+        int neighborsCount = 0;
         for (Location neighbor : GetNeighbors(location)) {
             if (aliveCells.stream().anyMatch(cell -> cell.location.equals(neighbor)))
-                countNeighbors++;
+                neighborsCount++;
         }
-        return countNeighbors == 3 ||
-                (countNeighbors == 2 && aliveCells.stream().anyMatch(cell -> cell.location.equals(location)));
+        return neighborsCount == 3 ||
+                (neighborsCount == 2 && aliveCells.stream().anyMatch(cell -> cell.location.equals(location)));
     }
 
     @Override

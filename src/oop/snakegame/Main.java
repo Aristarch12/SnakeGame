@@ -78,7 +78,7 @@ public class Main extends Application {
     private int getMaxCountPlayers() {
         return collectionKeyMap.size();
     }
-    private final static int cellSize = 20;
+    private final static int cellSize = 15;
     private Game game;
     private GraphicsContext gc;
     private Timer timer = new Timer();

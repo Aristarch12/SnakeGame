@@ -18,7 +18,7 @@ public class MouseRedactorController extends Redactor implements EventHandler<Mo
     }
 
     @Override
-    public void handle(MouseEvent event) {
+    synchronized public void handle(MouseEvent event) {
         int column = (int) (event.getX() / cellSize);
         int row = (int) (event.getY() / cellSize);
         Location location = new Location(column, row);

@@ -15,7 +15,7 @@ abstract class Redactor implements IGameController {
     }
 
     @Override
-    public void controlGame(Game game) {
+    synchronized public void controlGame(Game game) {
         for (LifeCell lifeCell : potentialCells) {
 
             if (game.getLevel().getFreeLocations().contains(lifeCell.location)) {
