@@ -7,7 +7,7 @@ import oop.snakegame.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PlayerController implements IController{
+public abstract class PlayerController implements IGameController {
     private Player player;
 
     protected List<PlayerAction> actions = new ArrayList<>();

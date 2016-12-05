@@ -15,16 +15,16 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import oop.snakegame.cells.Cell;
-import oop.snakegame.controllers.IController;
+import oop.snakegame.controllers.IGameController;
 import oop.snakegame.controllers.KeyboardPlayerController;
-import oop.snakegame.controllers.MouseController;
+import oop.snakegame.controllers.MouseRedactorController;
 import oop.snakegame.primitives.Direction;
 
 import java.util.*;
 
 public class Main extends Application {
 
-    private final static int tickTime = 500;
+    private final static int tickTime = 400;
     private final static String levelFileName = "level.txt";
     private final static List<Paint> colors = new ArrayList<Paint>() {{
         add(Color.BLUE);
@@ -82,7 +82,7 @@ public class Main extends Application {
     private Game game;
     private GraphicsContext gc;
     private Timer timer = new Timer();
-    private IController[] controllers;
+    private IGameController[] controllers;
     private Painter painter;
 
     @Override
@@ -96,15 +96,15 @@ public class Main extends Application {
         scheduleGameTimer();
     }
 
-    private IController[] createControllers(Player[] players) {
-        List<IController> controllers = new ArrayList<>(playersCount);
+    private IGameController[] createControllers(Player[] players) {
+        List<IGameController> controllers = new ArrayList<>(playersCount);
         for (int i = 0; i < playersCount; i++) {
             KeyboardPlayerController controller = new KeyboardPlayerController(players[i]);
             controller.setKeyMap(collectionKeyMap.get(i));
             controllers.add(controller);
         }
-        controllers.add(new MouseController(cellSize));
-        return controllers.toArray(new IController[controllers.size()]);
+        controllers.add(new MouseRedactorController(cellSize));
+        return controllers.toArray(new IGameController[controllers.size()]);
     }
 
     private void setUpStage(Stage primaryStage, int width, int height) {
@@ -120,23 +120,19 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private void addHandlers(Scene scene, IController[] controllers) {
-        for(IController controller: controllers)  {
-            if (controller instanceof  KeyboardPlayerController && controller instanceof EventHandler<?>)
-                try {
+    private void addHandlers(Scene scene, IGameController[] controllers) {
+        for(IGameController controller: controllers)  {
+            if (controller instanceof  KeyboardPlayerController)
+
                     scene.addEventHandler(KeyEvent.KEY_PRESSED, (EventHandler<? super KeyEvent>) controller);
-                } catch (ClassCastException ignored) {}
-            if (controller instanceof  MouseController && controller instanceof EventHandler<?>)
-                try {
+
+            if (controller instanceof MouseRedactorController)
+
                     scene.addEventHandler(MouseEvent.MOUSE_PRESSED, (EventHandler<? super MouseEvent>) controller);
-                } catch (ClassCastException ignored) {}
+
         }
-
     }
 
-    private void addHandler(Scene scene, IController controller) {
-
-    }
 
     private HashMap<Integer, Paint> createSnakeIdToColorMap() {
         HashMap<Integer, Paint> idToColor = new HashMap<>();
@@ -171,7 +167,7 @@ public class Main extends Application {
         if (game.getState() == GameState.Finished) {
             gc.setFill(Color.RED);
             gc.setFont(Font.font(40));
-            gc.fillText("Game Over", canvas.getWidth() / 2, canvas.getHeight() / 2);
+            gc.fillText("Game Over", canvas.getWidth() / 2 - 100, canvas.getHeight() / 2);
             return;
         }
         for (Cell cell : game.getLevel()) {
