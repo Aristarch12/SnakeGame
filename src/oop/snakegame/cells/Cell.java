@@ -28,5 +28,7 @@ public abstract class Cell {
 
     public abstract void interactWithPlayer(Player player, Level level) throws GameException;
 
+    public abstract void interactWithCell(Cell cell);
+
     public abstract void accept(IVisitor visitor);
 }

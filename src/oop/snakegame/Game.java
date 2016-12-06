@@ -4,9 +4,11 @@ import oop.snakegame.cells.Cell;
 import oop.snakegame.cells.SnakeBlock;
 import oop.snakegame.controllers.IGameController;
 import oop.snakegame.primitives.Location;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Game {
 
@@ -26,19 +28,33 @@ public class Game {
             controller.controlGame(this);
         }
         if (state != GameState.Pause) {
-            level.updateStateActiveBonuses();
-            level.life.update();
-            try {
-                for (Player player : players) {
-                    UpdatePlayerState(player);
-                }
-            } catch (GameException e){
-                e.printStackTrace();
+            for (GameObject gameObject : level.gameObjects) {
+                gameObject.update();
             }
+            handleObjectsCollision();
+
+//            level.updateStateActiveBonuses();
+//            level.life.update();
+//            try {
+//                for (Player player : players) {
+//                    UpdatePlayerState(player);
+//                }
+//            } catch (GameException e){
+//                e.printStackTrace();
+//            }
         }
         if (Arrays.stream(players).allMatch(player -> player.getState() == PlayerState.Dead))
             state = GameState.Finished;
     }
+
+    private void handleObjectsCollision() {
+        for (Cell cell : level) {
+            for (Cell cell1 : level.getCells(cell.location).stream().filter((c) -> !cell.equals(c)).collect(Collectors.toList())) {
+                cell.interactWithCell(cell1);
+            }
+        }
+    }
+
 
     private void UpdatePlayerState(Player player) throws GameException {
         Snake snake = player.getSnake();
@@ -74,13 +90,14 @@ public class Game {
     public void setState(GameState gameState) { state = gameState;}
 
     void loadLevel(Level level) throws GameException {
-        state = GameState.Active;
-        this.level = level;
-        if (level.snakes.length > players.length)
-            throw new GameException("not all snakes have players");
-        for (int i = 0; i < level.snakes.length; i++){
-            players[i].setSnake(level.snakes[i]);
-        }
+//        state = GameState.Active;
+//        this.level = level;
+//        if (level.snakes.length > players.length)
+//            throw new GameException("not all snakes have players");
+//        for (int i = 0; i < level.snakes.length; i++){
+//            players[i].setSnake(level.snakes[i]);
+//        }
+        throw new NotImplementedException();
     }
 
     public Level getLevel(){

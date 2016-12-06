@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Field implements Iterable<Cell> {
+public class Field extends GameObject {
 
     private List<Cell> cells;
     final int width;
@@ -43,5 +43,10 @@ public class Field implements Iterable<Cell> {
     boolean isCorrectLocation(Location location) {
         return (location.x >= 0 && location.x < width &&
                 location.y >= 0 && location.y < height);
+    }
+
+    @Override
+    void update() {
+
     }
 }
