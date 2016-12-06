@@ -1,5 +1,6 @@
 package oop.snakegame;
 
+import oop.snakegame.cells.Cell;
 import oop.snakegame.cells.SnakeBlock;
 import oop.snakegame.primitives.Direction;
 import oop.snakegame.primitives.Location;
@@ -10,7 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.stream.Stream;
 
-public class Snake implements Iterable<SnakeBlock> {
+public class Snake extends GameObject {
     private Direction lastHeadDirection;
     private Direction nextHeadDirection;
     private LinkedList<SnakeBlock> blocks;
@@ -64,9 +65,10 @@ public class Snake implements Iterable<SnakeBlock> {
         lastHeadDirection = nextHeadDirection;
     }
 
-    public Iterator<SnakeBlock> iterator() {
-        return blocks.iterator();
-    }
+//    @Override
+//    public Iterator<Cell> iterator() {
+//        return blocks.iterator();
+//    }
 
     public void extend(int increment) {
         extensionCount += increment;
@@ -116,4 +118,13 @@ public class Snake implements Iterable<SnakeBlock> {
     }
 
 
+    @Override
+    void update() {
+
+    }
+
+    @Override
+    public Iterator<Cell> iterator() {
+        return null;
+    }
 }

@@ -1,6 +1,7 @@
 package oop.snakegame;
 
 import com.sun.org.apache.xpath.internal.operations.Equals;
+import oop.snakegame.cells.Cell;
 import oop.snakegame.cells.LifeCell;
 import oop.snakegame.primitives.Location;
 
@@ -10,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Life implements Iterable<LifeCell>  {
+public class Life extends GameObject {
 
     private List<LifeCell> aliveCells;
 
@@ -70,10 +71,10 @@ public class Life implements Iterable<LifeCell>  {
                 (neighborsCount == 2 && aliveCells.stream().anyMatch(cell -> cell.location.equals(location)));
     }
 
-    @Override
-    public Iterator<LifeCell> iterator() {
-        return aliveCells.iterator();
-    }
+//    @Override
+//    public Iterator<LifeCell> iterator() {
+//        return aliveCells.iterator();
+//    }
 
     Stream<LifeCell> stream(){
         return aliveCells.stream();
@@ -81,5 +82,10 @@ public class Life implements Iterable<LifeCell>  {
 
     public void killCell(LifeCell lifeCell) {
         aliveCells.remove(lifeCell);
+    }
+
+    @Override
+    public Iterator<Cell> iterator() {
+        return null;
     }
 }

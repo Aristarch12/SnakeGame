@@ -1,5 +1,7 @@
 package oop.snakegame;
 
-public abstract class GameObject {
+import oop.snakegame.cells.Cell;
 
+public abstract class GameObject  implements Iterable<Cell>{
+    abstract void update();
 }
