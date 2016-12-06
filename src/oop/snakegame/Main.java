@@ -123,13 +123,9 @@ public class Main extends Application {
     private void addHandlers(Scene scene, IGameController[] controllers) {
         for(IGameController controller: controllers)  {
             if (controller instanceof  KeyboardPlayerController)
-
                     scene.addEventHandler(KeyEvent.KEY_PRESSED, (EventHandler<? super KeyEvent>) controller);
-
             if (controller instanceof MouseRedactorController)
-
                     scene.addEventHandler(MouseEvent.MOUSE_PRESSED, (EventHandler<? super MouseEvent>) controller);
-
         }
     }
 
@@ -156,7 +152,6 @@ public class Main extends Application {
                 if (game.getState() == GameState.Finished) {
                     timer.cancel();
                 }
-
             }
         }, 0, tickTime);
     }

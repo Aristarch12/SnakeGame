@@ -11,7 +11,6 @@ public class Level implements Iterable<Cell> {
 
     public final Field field;
     final Snake[] snakes;
-
     public final Random random;
     public final Life life;
 

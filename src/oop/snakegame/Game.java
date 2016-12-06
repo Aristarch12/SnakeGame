@@ -8,10 +8,6 @@ import oop.snakegame.primitives.Location;
 import java.util.Arrays;
 import java.util.List;
 
-enum GameState{
-    Active, Finished
-}
-
 public class Game {
 
     private Level level;
@@ -29,14 +25,16 @@ public class Game {
         for (IGameController controller: controllers){
             controller.controlGame(this);
         }
-        level.updateStateActiveBonuses();
-        level.life.update();
-        try {
-            for (Player player : players) {
-                UpdatePlayerState(player);
+        if (state != GameState.Pause) {
+            level.updateStateActiveBonuses();
+            level.life.update();
+            try {
+                for (Player player : players) {
+                    UpdatePlayerState(player);
+                }
+            } catch (GameException e){
+                e.printStackTrace();
             }
-        } catch (GameException e){
-            e.printStackTrace();
         }
         if (Arrays.stream(players).allMatch(player -> player.getState() == PlayerState.Dead))
             state = GameState.Finished;
@@ -70,9 +68,10 @@ public class Game {
         }
     }
 
-    GameState getState(){
+    public GameState getState(){
         return state;
     }
+    public void setState(GameState gameState) { state = gameState;}
 
     void loadLevel(Level level) throws GameException {
         state = GameState.Active;

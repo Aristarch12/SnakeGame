@@ -4,6 +4,7 @@ package oop.snakegame.controllers;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
+import oop.snakegame.GameState;
 import oop.snakegame.cells.LifeCell;
 import oop.snakegame.cells.MovingBonus;
 import oop.snakegame.cells.Wall;
@@ -22,8 +23,24 @@ public class MouseRedactorController extends Redactor implements EventHandler<Mo
         int column = (int) (event.getX() / cellSize);
         int row = (int) (event.getY() / cellSize);
         Location location = new Location(column, row);
+        //            if (game.getLevel().getFreeLocations().contains(lifeCell.location)) {
+//                game.getLevel().life.addCell(lifeCell);
+//            }
         if (event.getButton() == MouseButton.PRIMARY) {
-            potentialCells.add(new LifeCell(location));
+            gameActions.add((game) -> {
+                if (game.getLevel().getFreeLocations().contains(location))
+                game.getLevel().life.addCell(new LifeCell(location));
+            });
+        }
+        if (event.getButton() == MouseButton.SECONDARY) {
+            gameActions.add((game) ->  {
+                if (game.getState() == GameState.Pause) {
+                    game.setState(GameState.Active);
+                }
+                else if (game.getState() == GameState.Active) {
+                    game.setState(GameState.Pause);
+                }
+            });
         }
     }
 }
