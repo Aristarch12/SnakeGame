@@ -75,4 +75,19 @@ public class Level implements Iterable<Cell> {
     public Iterator<Cell> iterator() {
         return stream().collect(Collectors.toList()).iterator();
     }
+
+    public Snake[] getSnakes() {
+        return (Snake[]) gameObjects.stream().filter((obj) -> obj instanceof Snake).toArray();
+
+    }
+
+    public Life getLife() {
+        Optional<GameObject> r = gameObjects.stream().filter((obj) -> obj instanceof Life).findFirst();
+        if (r.isPresent()) {
+            return (Life) r.get();
+        }
+        else {
+            throw new RuntimeException("life not found");
+        }
+    }
 }

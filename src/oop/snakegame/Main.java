@@ -132,7 +132,7 @@ public class Main extends Application {
 
     private HashMap<Integer, Paint> createSnakeIdToColorMap() {
         HashMap<Integer, Paint> idToColor = new HashMap<>();
-        Snake[] snakes =  game.getLevel().snakes;
+        Snake[] snakes =  game.getLevel().getSnakes();
         for (int i = 0; i < snakes.length; i++) {
             idToColor.put(snakes[i].id, colors.get(i));
         }

@@ -29,7 +29,7 @@ public class MouseRedactorController extends Redactor implements EventHandler<Mo
         if (event.getButton() == MouseButton.PRIMARY) {
             gameActions.add((game) -> {
                 if (game.getLevel().getFreeLocations().contains(location))
-                game.getLevel().life.addCell(new LifeCell(location));
+                game.getLevel().getLife().addCell(new LifeCell(location));
             });
         }
         if (event.getButton() == MouseButton.SECONDARY) {
