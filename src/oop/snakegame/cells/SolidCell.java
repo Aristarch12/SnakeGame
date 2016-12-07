@@ -1,8 +1,6 @@
 package oop.snakegame.cells;
 
-import oop.snakegame.GameException;
-import oop.snakegame.Level;
-import oop.snakegame.Player;
+import oop.snakegame.*;
 import oop.snakegame.primitives.Location;
 
 public abstract class SolidCell extends Cell {
@@ -13,5 +11,16 @@ public abstract class SolidCell extends Cell {
     @Override
     public void interactWithPlayer(Player player, Level level) throws GameException {
         player.getSnake().destroy();
+    }
+
+    @Override
+    public void interactWithCell(Cell cell) {
+        if (cell instanceof SnakeBlock)
+        {
+            cell.actions.add((Game game)->{
+                Snake snake = game.getPlayerThroughSnakeBlock((SnakeBlock)cell).getSnake();
+                snake.destroy();
+            });
+        }
     }
 }

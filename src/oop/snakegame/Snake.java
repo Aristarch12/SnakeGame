@@ -17,7 +17,7 @@ public class Snake extends GameObject {
     private LinkedList<SnakeBlock> blocks;
     private int extensionCount;
     private boolean death;
-    final int id;
+    public final int id;
 
     Snake(Location location, Direction headDirection, int id) {
         this.id = id;
@@ -113,7 +113,7 @@ public class Snake extends GameObject {
 
 
 
-    SnakeBlock getHead() {
+    public SnakeBlock getHead() {
         return blocks.getFirst();
     }
 

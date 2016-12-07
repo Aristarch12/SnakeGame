@@ -3,8 +3,13 @@ package oop.snakegame.cells;
 import oop.snakegame.*;
 import oop.snakegame.primitives.Location;
 
+import java.util.ArrayList;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 public abstract class Cell {
     public final Location location;
+    public ArrayList<Consumer<Game>> actions;
 
     Cell(Location location) {
         this.location = location;
