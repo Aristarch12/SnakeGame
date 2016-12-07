@@ -61,7 +61,7 @@ public class Game {
         if (snake.isDead())
             return;
         snake.move();
-        if (!level.field.isCorrectLocation(snake.getHead().location)) {
+        if (!level.getField().isCorrectLocation(snake.getHead().location)) {
             snake.destroy();
         } else  {
             handleInteractionWithObjects(player);
@@ -98,6 +98,18 @@ public class Game {
 //            players[i].setSnake(level.snakes[i]);
 //        }
         throw new NotImplementedException();
+    }
+
+    public Player getPlayerThroughSnakeBlock(SnakeBlock snakeBlock)
+    {
+        for(Player player : players)
+        {
+            if (player.getSnake().id == snakeBlock.id)
+            {
+                return player;
+            }
+        }
+        return null;
     }
 
     public Level getLevel(){

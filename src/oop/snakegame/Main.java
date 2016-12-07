@@ -91,7 +91,7 @@ public class Main extends Application {
         controllers = createControllers(game.players);
         game.setControllers(controllers);
         game.loadLevel(LevelCreator.create(levelFileName));
-        Field field = game.getLevel().field;
+        Field field = game.getLevel().getField();
         setUpStage(primaryStage, field.width * cellSize, field.height * cellSize);
         scheduleGameTimer();
     }

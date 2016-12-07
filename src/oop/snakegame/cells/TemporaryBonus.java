@@ -21,7 +21,7 @@ public class TemporaryBonus extends ActiveBonus {
     public void UpdateGameState(Level level) {
         timeToLive--;
         if (timeToLive == 0) {
-            level.field.removeCell(this);
+            level.getField().removeCell(this);
             regenerate(level);
             timeToLive = startTime;
         }
@@ -31,7 +31,7 @@ public class TemporaryBonus extends ActiveBonus {
     @Override
     public void regenerate(Level level) {
         int time = level.random.nextInt(20) + 5;
-        level.field.addCell(new TemporaryBonus(level.getFreeRandomLocation(), time, cost));
+        level.getField().addCell(new TemporaryBonus(level.getFreeRandomLocation(), time, cost));
     }
 
     @Override

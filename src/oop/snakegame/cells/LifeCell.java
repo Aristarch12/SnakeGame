@@ -1,11 +1,10 @@
 package oop.snakegame.cells;
 
 
-import oop.snakegame.GameException;
-import oop.snakegame.IVisitor;
-import oop.snakegame.Level;
-import oop.snakegame.Player;
+import oop.snakegame.*;
 import oop.snakegame.primitives.Location;
+
+import java.util.function.Function;
 
 public class LifeCell extends Cell {
     public LifeCell(Location location) {
@@ -14,8 +13,19 @@ public class LifeCell extends Cell {
 
     @Override
     public void interactWithPlayer(Player player, Level level) throws GameException {
-        level.life.killCell(this);
+        level.getLife().killCell(this);
     }
+
+    @Override
+    public void interactWithCell(Cell cell) {
+        if (cell instanceof SnakeBlock)
+        {
+            this.actions.add((Game game) -> {
+                game.getLevel().getLife().killCell(this);
+            });
+        }
+    }
+
 
     @Override
     public void accept(IVisitor visitor) {

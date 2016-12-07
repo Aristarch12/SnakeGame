@@ -9,15 +9,15 @@ import java.util.stream.Stream;
 
 public class Level implements Iterable<Cell> {
 
-    public final Field field;
-    public final Random random;
     public List<GameObject> gameObjects;
+    public final Random random;
 
     Level(Field field, Snake[] snakes, Life life) {
-        this.field = field;
-//        this.snakes = snakes;
-//        this.life = life;
-        this.random = new Random();
+        gameObjects.add(field);
+        gameObjects.add(life);
+        for(Snake snake : snakes)
+            gameObjects.add(snake);
+        random = new Random();
     }
 
     void updateStateActiveBonuses() {
@@ -38,8 +38,8 @@ public class Level implements Iterable<Cell> {
 
     public List<Location> getFreeLocations() {
         HashSet<Location> result = new HashSet<>();
-        for (int x = 0; x < field.width; x++)
-            for (int y = 0; y < field.height; y++)
+        for (int x = 0; x < getField().width; x++)
+            for (int y = 0; y < getField().height; y++)
                 result.add(new Location(x, y));
         for (Cell cell : this) {
             result.remove(cell.location);
@@ -74,6 +74,17 @@ public class Level implements Iterable<Cell> {
     @Override
     public Iterator<Cell> iterator() {
         return stream().collect(Collectors.toList()).iterator();
+    }
+
+    public Field getField() {
+        Optional<GameObject> result = gameObjects.stream().filter((obj) -> obj instanceof Field).findFirst();
+        if (result.isPresent()){
+            return (Field)result.get();
+        }
+        else
+        {
+            throw new RuntimeException("Field not found");
+        }
     }
 
     public Snake[] getSnakes() {

@@ -6,7 +6,7 @@ import oop.snakegame.primitives.Location;
 
 public class SizeBonus extends Bonus {
 
-    private int sizeIncrement;
+    protected int sizeIncrement;
 
     public SizeBonus(Location location, int sizeIncrement) {
         super(location, sizeIncrement);
@@ -22,7 +22,7 @@ public class SizeBonus extends Bonus {
     @Override
     public void regenerate(Level level) {
         int increment = level.random.nextInt(4) + 1;
-        level.field.addCell(new SizeBonus(level.getFreeRandomLocation(), increment));
+        level.getField().addCell(new SizeBonus(level.getFreeRandomLocation(), increment));
     }
 
     @Override
