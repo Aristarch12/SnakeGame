@@ -1,12 +1,11 @@
 package oop.snakegame;
 
+import oop.snakegame.cells.ActiveBonus;
 import oop.snakegame.cells.Cell;
 import oop.snakegame.primitives.Location;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Field extends GameObject {
@@ -14,11 +13,13 @@ public class Field extends GameObject {
     private List<Cell> cells;
     final int width;
     final int height;
+    public Random random;
 
     Field(int width, int height) {
         this.width = width;
         this.height = height;
         cells = new ArrayList<>();
+        random = new Random();
     }
 
     public Iterator<Cell> iterator() {
@@ -45,8 +46,40 @@ public class Field extends GameObject {
                 location.y >= 0 && location.y < height);
     }
 
+    public List<Location> getFreeLocations() {
+        HashSet<Location> result = new HashSet<>();
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                result.add(new Location(x, y));
+        for (Cell cell : this) {
+            result.remove(cell.location);
+        }
+        return new ArrayList<>(result);
+    }
+
+    public ArrayList<Location> getFreeNeighbors(Location location) {
+        ArrayList<Location> result = new ArrayList<>();
+        List<Location> freeLocations = getFreeLocations();
+        for (Location freeLocation : freeLocations)
+            if (Math.abs(freeLocation.x - location.x) + Math.abs(freeLocation.y - location.y) == 1)
+                result.add(new Location(freeLocation.x, freeLocation.y));
+        return result;
+    }
+
+    public Location getFreeRandomLocation()
+    {
+        List<Location> freeLocations = getFreeLocations();
+        int index = random.nextInt(freeLocations.size());
+        return freeLocations.get(index);
+    }
+
+
     @Override
     void update() {
-
+        for (Cell cell : new ArrayList<>(cells)) {
+            if (cell instanceof ActiveBonus) {
+                ((ActiveBonus) cell).UpdateGameState(this);
+            }
+        }
     }
 }

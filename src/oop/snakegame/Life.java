@@ -1,6 +1,5 @@
 package oop.snakegame;
 
-import com.sun.org.apache.xpath.internal.operations.Equals;
 import oop.snakegame.cells.Cell;
 import oop.snakegame.cells.LifeCell;
 import oop.snakegame.primitives.Location;
@@ -76,8 +75,8 @@ public class Life extends GameObject {
 //        return aliveCells.iterator();
 //    }
 
-    Stream<LifeCell> stream(){
-        return aliveCells.stream();
+    Stream<Cell> stream(){
+        return aliveCells.stream().map(cell -> (Cell)cell);
     }
 
     public void killCell(LifeCell lifeCell) {

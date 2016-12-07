@@ -88,11 +88,17 @@ class LevelCreator {
             field.addCell(firstTeleport);
             field.addCell(secondTeleport);
         }
-
         if (snakes.isEmpty())
             throw new ParseException("no snakes on map", field.height * field.width);
-
-        return new Level(field, snakes.toArray(new Snake[snakes.size()]), life);
+        List<GameObject> gameObjects = new ArrayList<GameObject>() {
+            {
+                add(field);
+                for (Snake snake : snakes)
+                    add(snake);
+                add(life);
+            }
+        };
+        return new Level(gameObjects);
     }
 
     private static Cell createCell(Location location, char c) {

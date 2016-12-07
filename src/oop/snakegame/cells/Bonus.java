@@ -17,7 +17,7 @@ public abstract class Bonus extends Cell {
     public void interactWithPlayer(Player player, Level level) throws GameException {
         player.addScore(cost);
         level.getField().removeCell(this);
-        regenerate(level);
+        regenerate(level.getField());
     }
 
     @Override
@@ -25,9 +25,9 @@ public abstract class Bonus extends Cell {
         if (cell instanceof SnakeBlock)
         {
             this.actions.add((Game game)->{game.getLevel().getField().removeCell(this);});
-            this.actions.add((Game game)->{regenerate(game.getLevel());});
+            this.actions.add((Game game)->{regenerate(game.getLevel().getField());});
         }
     }
 
-    abstract void regenerate(Level level);
+    abstract void regenerate(Field field);
 }

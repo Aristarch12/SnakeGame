@@ -1,6 +1,7 @@
 package oop.snakegame.cells;
 
 
+import oop.snakegame.Field;
 import oop.snakegame.IVisitor;
 import oop.snakegame.Level;
 import oop.snakegame.primitives.Location;
@@ -18,20 +19,20 @@ public class TemporaryBonus extends ActiveBonus {
     public int getTimeToLive() { return timeToLive; }
 
     @Override
-    public void UpdateGameState(Level level) {
+    public void UpdateGameState(Field field) {
         timeToLive--;
         if (timeToLive == 0) {
-            level.getField().removeCell(this);
-            regenerate(level);
+            field.removeCell(this);
+            regenerate(field);
             timeToLive = startTime;
         }
     }
 
 
     @Override
-    public void regenerate(Level level) {
-        int time = level.random.nextInt(20) + 5;
-        level.getField().addCell(new TemporaryBonus(level.getFreeRandomLocation(), time, cost));
+    public void regenerate(Field field) {
+        int time = field.random.nextInt(20) + 5;
+        field.addCell(new TemporaryBonus(field.getFreeRandomLocation(), time, cost));
     }
 
     @Override

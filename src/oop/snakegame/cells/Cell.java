@@ -9,10 +9,11 @@ import java.util.function.Function;
 
 public abstract class Cell {
     public final Location location;
-    public ArrayList<Consumer<Game>> actions;
+    public ArrayList<GameAction> actions;
 
     Cell(Location location) {
         this.location = location;
+        actions = new ArrayList<>();
     }
 
     @Override

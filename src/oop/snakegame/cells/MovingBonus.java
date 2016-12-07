@@ -12,13 +12,14 @@ public class MovingBonus extends ActiveBonus{
     }
 
     @Override
-    public void UpdateGameState(Level level) {
-        level.getField().removeCell(this);
-        ArrayList<Location> freeLocations = level.getFreeNeighbors(location);
+    public void UpdateGameState(Field field) {
+        field.removeCell(this);
+        ArrayList<Location> freeLocations = field.getFreeNeighbors(location);
         freeLocations.add(location);
-        Location newLocation = freeLocations.get(level.random.nextInt(freeLocations.size()));
-        level.getField().addCell(new MovingBonus(newLocation, cost));
+        Location newLocation = freeLocations.get(field.random.nextInt(freeLocations.size()));
+        field.addCell(new MovingBonus(newLocation, cost));
     }
+
 
     @Override
     public void interactWithPlayer(Player player, Level level) throws GameException {
@@ -26,8 +27,8 @@ public class MovingBonus extends ActiveBonus{
     }
 
     @Override
-    public void regenerate(Level level) {
-        level.getField().addCell(new MovingBonus(level.getFreeRandomLocation(), cost));
+    public void regenerate(Field field) {
+        field.addCell(new MovingBonus(field.getFreeRandomLocation(), cost));
     }
 
     @Override

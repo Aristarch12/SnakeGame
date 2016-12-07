@@ -23,12 +23,9 @@ public class MouseRedactorController extends Redactor implements EventHandler<Mo
         int column = (int) (event.getX() / cellSize);
         int row = (int) (event.getY() / cellSize);
         Location location = new Location(column, row);
-        //            if (game.getLevel().getFreeLocations().contains(lifeCell.location)) {
-//                game.getLevel().life.addCell(lifeCell);
-//            }
         if (event.getButton() == MouseButton.PRIMARY) {
             gameActions.add((game) -> {
-                if (game.getLevel().getFreeLocations().contains(location))
+                if (game.getLevel().getField().getFreeLocations().contains(location))
                 game.getLevel().getLife().addCell(new LifeCell(location));
             });
         }

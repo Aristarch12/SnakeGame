@@ -20,9 +20,9 @@ public class SizeBonus extends Bonus {
     }
 
     @Override
-    public void regenerate(Level level) {
-        int increment = level.random.nextInt(4) + 1;
-        level.getField().addCell(new SizeBonus(level.getFreeRandomLocation(), increment));
+    public void regenerate(Field field) {
+        int increment = field.random.nextInt(4) + 1;
+        field.addCell(new SizeBonus(field.getFreeRandomLocation(), increment));
     }
 
     @Override

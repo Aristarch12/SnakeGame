@@ -107,8 +107,8 @@ public class Snake extends GameObject {
         return blocks.toArray(new SnakeBlock[0]);
     }
 
-    Stream<SnakeBlock> stream(){
-        return blocks.stream();
+    Stream<Cell> stream(){
+        return blocks.stream().map(snakeBlock -> (Cell)snakeBlock);
     }
 
 
@@ -120,7 +120,7 @@ public class Snake extends GameObject {
 
     @Override
     void update() {
-
+        move();
     }
 
     @Override

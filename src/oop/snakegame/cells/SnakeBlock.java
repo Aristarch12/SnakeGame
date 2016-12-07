@@ -18,27 +18,12 @@ public class SnakeBlock extends SolidCell {
 
     @Override
     public void interactWithCell(Cell cell) {
-        if (cell instanceof SnakeBlock) {
-            SnakeBlock snakeBlock = (SnakeBlock)cell;
-            if (this.id == snakeBlock.id) {
-                this.actions.add((Game game) -> {
-                    Snake snake = game.getPlayerThroughSnakeBlock(snakeBlock).getSnake();
+        if (cell instanceof SolidCell) {
+            this.actions.add((Game game)->{
+                Snake snake = game.getPlayerThroughSnakeBlock(this).getSnake();
+                if (snake.getHead() == this)
                     snake.destroy();
-                });
-            }
-            else
-            {
-                this.actions.add((Game game)->{
-                    Snake snake = game.getPlayerThroughSnakeBlock(this).getSnake();
-                    if (snake.getHead() == this)
-                        snake.destroy();
-                });
-                cell.actions.add((Game game)->{
-                    Snake snake = game.getPlayerThroughSnakeBlock(snakeBlock).getSnake();
-                    if (snake.getHead() == snakeBlock)
-                        snake.destroy();
-                });
-            }
+            });
         }
         if (cell instanceof Bonus)
         {
@@ -52,13 +37,6 @@ public class SnakeBlock extends SolidCell {
             this.actions.add((Game game)->{
                 Player player = game.getPlayerThroughSnakeBlock(this);
                 player.getSnake().extend(((SizeBonus)cell).sizeIncrement);
-            });
-        }
-        if (cell instanceof Wall)
-        {
-            this.actions.add((Game game)->{
-                Snake snake = game.getPlayerThroughSnakeBlock(this).getSnake();
-                snake.destroy();
             });
         }
         if (cell instanceof Teleport)
